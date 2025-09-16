@@ -8,3 +8,7 @@ SoftUni JS Back End Course project - Cat Shelter
 - [x] debugging
 - [x] Basic http server
 - [x] Add resources
+- [x] read and load home.html
+- [x] read and load css
+- []
+- []
