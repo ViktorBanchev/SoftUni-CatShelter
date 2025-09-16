@@ -7,3 +7,4 @@ SoftUni JS Back End Course project - Cat Shelter
 - [x] dev environment
 - [x] debugging
 - [x] Basic http server
+- [x] Add resources
