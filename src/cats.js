@@ -23,7 +23,7 @@ export default [
     {
       "id": 4,
       "imageUrl": "https://media.istockphoto.com/id/1443562748/photo/cute-ginger-cat.jpg?s=612x612&w=0&k=20&c=vvM97wWz-hMj7DLzfpYRmY2VswTqcFEKkC437hxm3Cg=",
-      "name": "Garry",
+      "name": "Joro",
       "breed": "Bombay Cat",
       "description": "Mysterious and elegant. Often found lounging in sunny spots."
     }

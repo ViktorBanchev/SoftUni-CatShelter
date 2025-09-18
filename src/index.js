@@ -4,8 +4,34 @@ import fs from "fs/promises";
 import cats from "./cats.js";
 
 const server = http.createServer(async (req, res) => {
-    console.log(req.url)
     let html;
+
+    if (req.method == "POST") {
+        console.log("POST Requst has been made");
+
+        let data = '';
+
+        req.on('data', (chunk) => {
+            data += chunk.toString();
+        });
+
+        req.on('end', () => {
+            const searchParams = new URLSearchParams(data);
+
+            const newCat = Object.fromEntries(searchParams.entries());
+
+            cats.push(newCat);
+
+            res.writeHead(302, {
+                'location': '/'
+            })
+
+            res.end();
+        })
+        return
+    }
+
+
     switch (req.url) {
         case "/":
             html = await homeView()
@@ -37,8 +63,8 @@ const server = http.createServer(async (req, res) => {
     res.end()
 })
 
-server.listen(5000);
-console.log("Server is listening on http://localhost:5000");
+server.listen(5050);
+console.log("Server is listening on http://localhost:5050");
 
 
 function catTemplate(cat) {
@@ -60,7 +86,7 @@ async function homeView() {
     const html = await fs.readFile('./src/views/home/index.html', { encoding: "utf-8" });
 
     const catsHtml = cats.map(cat => catTemplate(cat)).join('\n')
-    const result = html.replace('{{cats}}', catsHtml)
+    const result = html.replaceAll('{{cats}}', catsHtml)
     
     return result;
 }
