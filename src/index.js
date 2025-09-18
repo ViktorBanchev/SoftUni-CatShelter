@@ -1,7 +1,7 @@
 import http from "http";
 import fs from "fs/promises";
 
-import cats from "./cats.js";
+import {getCats, saveCat} from "./data.js";
 
 const server = http.createServer(async (req, res) => {
     let html;
@@ -15,12 +15,12 @@ const server = http.createServer(async (req, res) => {
             data += chunk.toString();
         });
 
-        req.on('end', () => {
+        req.on('end', async () => {
             const searchParams = new URLSearchParams(data);
 
             const newCat = Object.fromEntries(searchParams.entries());
 
-            cats.push(newCat);
+            await saveCat(newCat)
 
             res.writeHead(302, {
                 'location': '/'
@@ -40,7 +40,8 @@ const server = http.createServer(async (req, res) => {
             const homeCss = await fs.readFile('./src/styles/site.css', { encoding: 'utf-8' });
 
             res.writeHead(200, {
-                "content-type": "text/css"
+                "content-type": "text/css",
+                "cache-control": "max-age=10"
             })
 
             res.write(homeCss);
@@ -85,6 +86,7 @@ function catTemplate(cat) {
 async function homeView() {
     const html = await fs.readFile('./src/views/home/index.html', { encoding: "utf-8" });
 
+    const cats = await getCats();
     const catsHtml = cats.map(cat => catTemplate(cat)).join('\n')
     const result = html.replaceAll('{{cats}}', catsHtml)
     
