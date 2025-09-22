@@ -25,6 +25,28 @@ export async function updateCat(catId, catData) {
     await saveDb();
 }
 
+export async function deleteCat(catId) {
+    db.cats = db.cats.filter(cat => cat.id !== catId);
+    await saveDb();
+}
+
+export async function getBreeds() {
+    return db.breeds;
+}
+
+export async function getOtherBreeds(currBreed) {
+    db.breeds = db.breeds.filter(breed => breed !== currBreed);
+    return db.breeds;
+}
+
+export async function saveBreed(breed) {
+    db.breeds.push(breed);
+    await saveDb();
+}
+
+
+
+
 async function saveDb() {
     const dbSerialized = JSON.stringify(db, null, 2);
 
